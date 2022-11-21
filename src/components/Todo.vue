@@ -112,6 +112,7 @@
           <form action="/action_page.php" class="was-validated">
             <div class="mb-3 mt-3">
               <input
+                id="titleinput"
                 v-model="title"
                 type="text"
                 class="form-control"
@@ -120,7 +121,7 @@
                 required
               />
               <div class="valid-feedback">Valid.</div>
-              <div class="invalid-feedback">Title is Required!</div>
+              <div class="invalid-feedback">New Title is Required!</div>
             </div>
             <div class="mb-3">
               <input
@@ -246,10 +247,22 @@ export default {
       toastr.success('Deleted Succesfully');
     },
     addTask() {
+      console.log(document.getElementById('titleinput').classList);
       if (this.title.length === 0) return;
       if (this.description.length === 0) return;
       if (this.priority.length === 0) return;
-      /* We need to update the task */
+      document.getElementById('titleinput').style.display = 'block';
+      document.getElementById('titleinput').value = '';
+      if (this.tasks.length != 0) {
+        for (let i = 0; i < this.tasks.length; i++) {
+          if (this.title == this.tasks[i].tit) {
+            document.getElementById('titleinput').classList.remove('is-valid');
+            document.getElementById('titleinput').classList.add('is-invalid');
+            return;
+          }
+        }
+      }
+
       if (this.editedTask != null) {
         this.tasks[this.editedTask].Description = this.description;
         this.tasks[this.editedTask].Deadline = this.deadline;
